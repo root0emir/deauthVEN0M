@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='DeauthVen0m',
-    version='1.0',
+    version='1.1',
     author='root0emir', 
     description='Advanced WiFi Deauth Attack Tool',
     long_description=open('README.md').read(),  

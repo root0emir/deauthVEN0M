@@ -17,9 +17,9 @@ def show_banner():
 
 
 scan_time = 20
-deauth_packets = 500
-interval = 0.1
-burst = 10
+deauth_packets = 1000
+interval = 0.01
+burst = 50
 interface = None
 networks = []
 clients = []
@@ -121,19 +121,19 @@ def select_attack_profile():
     choice = input("Choose an attack profile: ")
     if choice == "1":
         scan_time = 20
-        deauth_packets = 50
-        interval = 0.5
+        deauth_packets = 500
+        interval = 0.1
         burst = 5
     elif choice == "2":
         scan_time = 15
-        deauth_packets = 100
-        interval = 0.2
+        deauth_packets = 750
+        interval = 0.1
         burst = 10
     elif choice == "3":
         scan_time = 10
-        deauth_packets = 200
-        interval = 0.05
-        burst = 20
+        deauth_packets = 1000
+        interval = 0.01
+        burst = 50
     else:
         print(f"{Fore.RED}[-] Invalid choice, using default settings.")
 

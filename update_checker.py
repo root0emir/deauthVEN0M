@@ -6,7 +6,7 @@ def check_for_updates(current_version):
         response.raise_for_status() 
 
         latest_release = response.json()
-        latest_version = latest_release['1.0']
+        latest_version = latest_release['1.1']
 
         if latest_version != current_version:
             print(f"Update available: {latest_version}. You are currently on {current_version}.")
